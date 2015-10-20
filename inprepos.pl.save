@@ -1,0 +1,28 @@
+%vim set syntax=prolog
+
+operator(+).
+operator(-).
+operator(*).
+operator(/).
+
+cislo(1).
+cislo(2).
+cislo(3).
+
+operand(X) :- cislo(X).
+
+infix_operand(X) :- operand(X). 
+infix_operand(X||Z) :- infix(X,Y,Z).
+
+prefix_operand(X) :- operand(X).
+
+postfix_operand(X) :- operand(X).
+
+
+infix(X|Y|Z) :- operator(Y), infix_operand(X), infix_operand(Z).
+
+prefix(Y|X|Z) :- operator(Y), prefix_operand(X), prefix_operand(Z).
+
+postfix(X|Z|Y) :- operator(Y), postfix_operand(X), postfix_operand(Z).
+
+
