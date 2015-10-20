@@ -37,10 +37,10 @@ infix([H|T]) :- T = [], infix_operand(H).
 %konec infixové notace
 
 %Zkoumání prefixové notace s binárními operátory
-prefix([R,Y,X,Z|T], []) :- write("NP 1>"),operator(R), operator(Y),  write([Y,X,Z|T]), write([R]), nl,prefix([Y,X,Z|T], R).
-prefix([R,Y,X,Z|T], Res) :- write("NP 2>"),operator(R), operator(Y), write([Y,X,Z|T]),spoj(Res,[R], M),write(M),nl,  prefix([Y,X,Z|T], M).
-prefix([Y,X,Z|T], Res) :- write("NP 3>"), operator(Y), prefix_operand(X), prefix_operand(Z), spoj(Res, [prefixOp], M), spoj(M,T,Seznam),write("Seznam:"), write(Seznam), nl, prefix(Seznam,[]).
-prefix([Y,X,Z|T],[]) :-  write("NP 4>"),operator(Y), prefix_operand(X), prefix_operand(Z),T = []. 
+prefix([R,Y,X,Z|T], []) :- operator(R), operator(Y),prefix([Y,X,Z|T], R).
+prefix([R,Y,X,Z|T], Res) :- operator(R), operator(Y),spoj(Res,[R], M), prefix([Y,X,Z|T], M).
+prefix([Y,X,Z|T], Res) :- operator(Y), prefix_operand(X), prefix_operand(Z), spoj(Res, [prefixOp], M), spoj(M,T,Seznam),prefix(Seznam,[]).
+prefix([Y,X,Z|T],[]) :- operator(Y), prefix_operand(X), prefix_operand(Z),T = [].
  
 %konex prefixové notace
 
