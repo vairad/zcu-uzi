@@ -1,5 +1,10 @@
 %vim set syntax=prolog
 
+%VAIS Radek - A13B0457P
+%Program InPrePos - overuje syntaxi aritmetických výrazů
+
+
+%deklarace operatorů
 operator('+').
 operator('-').
 operator('*').
@@ -8,6 +13,7 @@ operator('%').
 operator(mod).	
 
 
+%deklarace čísel
 cifra(0).
 cifra(1).
 cifra(2).
@@ -19,16 +25,24 @@ cifra(7).
 cifra(8).
 cifra(9).
 
-cislo(V) :- cifra(X), cifra(Y), V is 10*X+Y.
-cislo(V) :- cislo(X), X\=0, cifra(Y), V is 10*X+Y.
+cislo(V) :- cifra(V).
+cislo(V) :- cifra(X), X \= 0 ,cifra(Y), V is 10*X+Y.
+cislo(V) :- cifra(X), X \= 0, cifra(Y), Y \= 0, cifra(Z),  V is 100*X+10*Y+Z.
+cislo(V) :- cifra(X), x \= 0, cifra(Y), Y \= 0, cifra(Z), Z \= 0, cifra(P),  V is 1000*X+100*Y+10*Z+P.
+%cislo(V) :- cislo(X), X\=0, cifra(Y), V is 10*X+Y.
 
+%deklarace speciálních zástupnych znaku
 promenna('x').
 promenna('y').
 promenna('z').
 
-operand(X) :- cislo(X).
-operand(X) :- promenna(X).
+konstanta(pi).
+konstanta(e).
 
+operand(X) :- promenna(X).
+operand(X) :- konstanta(X).
+operand(X) :- operator(X), !, fail.
+operand(X) :- cislo(X).
 
 %##########################################################################################################################################
 %Pomocné pracující predikáty
@@ -37,6 +51,7 @@ spoj(Zacatek, Navazuje, Seznam) :- append(Zacatek, Navazuje, M), append(M,Seznam
 spoj(Zacatek, Navazuje, Seznam) :- M = [Zacatek, Navazuje], append(M, Seznam).
 
 obrat(L,R):-  obrat_in(L,[],R). 
+
 obrat_in([H|T],A,R) :-  obrat_in(T,[H|A],R).
 obrat_in([],A,A). 
 
@@ -54,18 +69,16 @@ infix([H|T]) :- T = [], infix_operand(H).
 %##########################################################################################################################################
 %Zkoumání prefixové notace s binárními operátory
 
-
-	%značka symbolizující nalezený prefixový výraz na nižší úrovni
+	%značka symbolizující nalezený prefixový výraz na nižší úrovni derivačního stromu
 prefix_mark(prefixOp).
 	
 	%operandy, ktere mohou vystupovat v prefixové notaci
-
 prefix_operand(X) :- operand(X).
 prefix_operand(X) :- prefix_mark(X).
 
-	%predikát "spuštění" kontroly prefixové notace
+	% predikát "spuštění" kontroly prefixové notace
 prefix(R) :- prefix(R, []).
-	%zabere true na nejjednodužší výraz typu "+ 2 2"	
+	% zabere true na nejjednodužší výraz typu "+ 2 2"	
 prefix([Y,X,Z|T], []) :- operator(Y), prefix_operand(X), prefix_operand(Z), T = [].
 	% skok ve výrazu který obsahuje syntax typu "+ 2 + 2 2"	
 prefix([R,Y,X|T], Res) :- operator(R), prefix_operand(Y), operator(X), spoj([R],[Y],M), spoj(Res, M, Seznam), prefix([X|T], Seznam).
@@ -73,7 +86,6 @@ prefix([R,Y,X|T], Res) :- operator(R), prefix_operand(Y), operator(X), spoj([R],
 prefix([R,Y|T], Res) :- operator(R), operator(Y), spoj(Res,[R], Seznam), prefix([Y|T], Seznam).
 	% namísto prefixového zápisu vloži žolík prefixOp a spustí analýzu prefix znovu se zjednodušeným výrazem.
 prefix([Y,X,Z|T], Res) :- operator(Y), prefix_operand(X), prefix_operand(Z), spoj(Res, [prefixOp], M), spoj(M,T,Seznam), prefix(Seznam,[]). 
-
 
 %konec prefixové notace
 %##########################################################################################################################################
@@ -88,8 +100,8 @@ help :- nl, nl, write("Inprepos"), nl,
 	write("Tento program rozpoznává formu zápisu aritmetických výrazů"), nl,
 	write("Napšte konec. pro ukončení programu."), nl,
 	write("Napiste help. nebo ??. pro zobrazení nápovědy."), nl,
-	write("Vaše výrazy zapisjte jako seznam."), nl,
-	write("Například [+, 1, 1,]."), nl.
+	write("Vaše výrazy zapisjte jako seznam prologu a a seznam připojte tečku."), nl,
+	write("Například \'[+, 1, 1,].\'."), nl.
 	
 
 testuj(X) :- infix(X), write("Tento výraz je zapsán infixovou formou"), nl, test.
