@@ -17,7 +17,7 @@ class RoundWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RoundWidget(QVBoxLayout *vLayout, QList<int> *roundValues, int number, QList<bool> *solution, QWidget *parent = 0);
+    explicit RoundWidget(QList<int> *roundValues, int number, QList<bool> *solution, QWidget *parent = 0);
     ~RoundWidget();
 
 public slots:

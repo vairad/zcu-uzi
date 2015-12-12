@@ -1,9 +1,17 @@
 #include <QtWidgets>
 #include <QLinkedList>
 
-#include "mainwindow.h"
-#include "roundwidget.h"
+#include "gui/mainwindow.h"
+#include "gui/roundwidget.h"
+#include "gui/helpwindow.h"
 #include "ui_mainwindow.h"
+
+#include "core/datacontroler.h"
+
+char MainWindow::VERSION_STR[] = "1.0";
+char MainWindow::APP_NAME_STR[] = "Mastermind";
+char MainWindow::AUTHOR_NAME_STR[] = "Radek VAIS, vaisr@students.zcu.cz";
+char MainWindow::AUTHOR_INFO_STR[] = "Semestrální práce předmětu KIV/UZI, 2015/2016";
 
 /**
  * Konstruktor hlavního okna aplikace.
@@ -11,23 +19,20 @@
  * @brief MainWindow::MainWindow
  * @param parent QWidget rodič hlavního okna
  */
-MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent), ui(new Ui::MainWindow)
-{
-   // this->listOfRounds = new QList<RoundWidget *>();
+MainWindow::MainWindow(QWidget *parent) :  QMainWindow(parent), ui(new Ui::MainWindow){
+    gameDialog = new GameDialog(new DataControler());
+    helpWin = new HelpWindow();
 
     ui->setupUi(this);
     ui->verticalLayout_3->setAlignment(Qt::AlignTop);
-    this->setWindowTitle("Mastermind");
 
-    createMenuBar();
+    this->setWindowTitle(APP_NAME_STR);
 
-    //  createToolBar();
-    //  createUserPanel();
-    //  initialWindow = new InitialWindow(dataManager, this);
+    createMenuBar(); // menu pro ovládání aplikace
+    createPlayButton(); //tlačítka pro hru
 
-   connect(this, SIGNAL(addedRound()), this, SLOT(moveScrollBar()));
+    connect(this, SIGNAL(addedRound()), this, SLOT(moveScrollBar()));
 }
-
 
 /**
  * Vytvoří menu aplikace Hra a Nápověda
@@ -53,31 +58,8 @@ void MainWindow::createMenuBar()
     menuHelp->setTitle("Nápověda");
     menuBar->addAction(menuHelp->menuAction());
 
-
     //================================================ add menu items
     // menu hra
-    QAction *actionOpen;
-    actionOpen = new QAction(this);
-    actionOpen->setText("Načíst hru");
-    actionOpen->setShortcut(Qt::Key_O | Qt::CTRL);
-    connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFileChooser()));
-    menuGame->addAction(actionOpen);
-
-    //############################################################################################
-    QAction *actionRound;
-    actionRound = new QAction(this);
-    actionRound->setText("Přidej kolo");
-    actionRound->setShortcut(Qt::Key_A);
-    connect(actionRound, SIGNAL(triggered()), this, SLOT(playRound()));
-    menuGame->addAction(actionRound);
-    //#############################################################################################
-
-    QAction *actionSave;
-    actionSave = new QAction(this);
-    actionSave->setText("Uložit hru");
-    actionSave->setShortcut(Qt::Key_S | Qt::CTRL);
-    connect(actionSave, SIGNAL(triggered()), this, SLOT(saveGame()));
-    menuGame->addAction(actionSave);
 
     QAction *actionNew;
     actionNew = new QAction(this);
@@ -85,6 +67,32 @@ void MainWindow::createMenuBar()
     actionNew->setShortcut(Qt::Key_N | Qt::CTRL);
     connect(actionNew, SIGNAL(triggered()), this, SLOT(createNewGame()));
     menuGame->addAction(actionNew);
+
+    QAction *actionOpen;
+    actionOpen = new QAction(this);
+    actionOpen->setText("Načíst hru");
+    actionOpen->setShortcut(Qt::Key_O | Qt::CTRL);
+    actionOpen->setEnabled(false); //##########x#################################
+    connect(actionOpen, SIGNAL(triggered()), this, SLOT(openFileChooser()));
+    menuGame->addAction(actionOpen);
+
+    QAction *actionSave;
+    actionSave = new QAction(this);
+    actionSave->setText("Uložit hru");
+    actionSave->setShortcut(Qt::Key_S | Qt::CTRL);
+    actionSave->setEnabled(false); //###########################################
+    connect(actionSave, SIGNAL(triggered()), this, SLOT(saveGame()));
+    menuGame->addAction(actionSave);
+
+    menuGame->addSeparator();
+
+    QAction *actionRound;
+    actionRound = new QAction(this);
+    actionRound->setText("Hádej kombinaci");
+    actionRound->setShortcut(Qt::Key_H);
+    connect(actionRound, SIGNAL(triggered()), this, SLOT(playRound()));
+    menuGame->addAction(actionRound);
+
 
     //menu nápověda
     QAction *actionHelp;
@@ -98,7 +106,7 @@ void MainWindow::createMenuBar()
     actionRules = new QAction(this);
     actionRules->setText("Pravidla hry");
     actionRules->setShortcut(Qt::Key_P | Qt::CTRL);
-    connect(actionRules, SIGNAL(triggered()), this, SLOT(openHelp()));
+    connect(actionRules, SIGNAL(triggered()), this, SLOT(openRules()));
     menuHelp->addAction(actionRules);
 
     QAction *actionAboutApp;
@@ -108,13 +116,97 @@ void MainWindow::createMenuBar()
     menuHelp->addAction(actionAboutApp);
 
     this->setMenuBar(menuBar);
+}
 
+void MainWindow::createPlayButton()
+{
 
 }
 
+void MainWindow::moveScrollBar(){
+    QScrollBar *v = ui->scrollArea->verticalScrollBar();
+    v->setValue(v->maximum());
+}
+
+/**
+ * Otevře okno s nápovědou k ovládání programu.
+ * @brief MainWindow::openHelp
+ */
+void MainWindow::openHelp(){
+    helpWin->createTextEdit("help/help.html");
+    helpWin->show();
+    helpWin->raise();
+    helpWin->activateWindow();
+}
+
+/**
+ * Otevře okno s nápovědou k pravidlům hry Mastermind
+ * @brief MainWindow::openRules
+ */
+void MainWindow::openRules(){
+    helpWin->createTextEdit("help/rules.html");
+    helpWin->show();
+    helpWin->raise();
+    helpWin->activateWindow();
+}
+
+/**
+ * Zobrazí informace o aplikaci
+ * @brief MainWindow::aboutApplication
+ */
+void MainWindow::aboutApplication(){
+    QString msg = QString ("%1 verze %2\n"
+                           "%3 \n"
+                           "%4").arg(QString(MainWindow::APP_NAME_STR),
+                                      QString(MainWindow::VERSION_STR),
+                                      QString(MainWindow::AUTHOR_NAME_STR),
+                                      QString(MainWindow::AUTHOR_INFO_STR)
+                                      );
+
+    QMessageBox::information(this, "O Aplikaci", msg, QMessageBox::Ok);
+}
+
+
+void MainWindow::saveGame(){
+    //TODO save game
+}
+
+void MainWindow::openFileChooser(){
+    //TODO open file
+}
+
+void MainWindow::addRound(QList<int> colors, QList<bool> solution){
+    RoundWidget *tmp = new RoundWidget(&colors, colors.size(), &solution, ui->scrollAreaWidgetContents_2);
+
+    listOfRounds.append(tmp);
+    ui->verticalLayout_3->addWidget(tmp, 0, Qt::AlignTop);
+    ui->scrollArea->ensureWidgetVisible(tmp);
+    ui->scrollAreaWidgetContents_2->repaint();
+    moveScrollBar();
+}
+
+void MainWindow::createNewGame(){
+    gameDialog->show();
+    gameDialog->raise();
+    gameDialog->activateWindow();
+}
+
+
+/**
+ * Metoda zpracovává požadavek na nové kolo hry.
+ * @brief GameDialog::acceptNewGame
+ */
+void MainWindow::acceptNewGame(){
+
+    QString msg = QString ("Byla zahájena nová hra s parametry: \n"
+                           " Počet barev : %1 \n"
+                           " Počet pozic : %2").arg(QString::number(gameDialog->mainTab->numberOfColors->value()),
+                                                    QString::number(gameDialog->mainTab->numberOfSlots->value()));
+    QMessageBox::information(this, "Nová hra", msg, QMessageBox::Ok);
+}
+
 void MainWindow::playRound(){
-    int i = counter;
-    counter++;
+   int i = 5;
 
     QList<int> seznam;
     seznam.append((1 + i) % 10);
@@ -152,28 +244,21 @@ void MainWindow::playRound(){
     addRound(seznam, solution);
 }
 
-void MainWindow::moveScrollBar(){
-    QScrollBar *v = ui->scrollArea->verticalScrollBar();
-    v->setValue(v->maximum());
-v->setValue(v->maximum());
-v->setValue(v->maximum());
-}
-
-void MainWindow::createToolBar()
-{
-
-}
-
-
-void MainWindow::addRound(QList<int> colors, QList<bool> solution){
-    listOfRounds.append(new RoundWidget(ui->verticalLayout_3, &colors, colors.size(), &solution, ui->scrollAreaWidgetContents_2));
-}
-
-MainWindow::~MainWindow()
-{
+void MainWindow::deleteRoundWidgets(){
     foreach (RoundWidget *widget, listOfRounds) {
         delete widget;
     }
+}
+
+/**
+ * Destruktor uklízí všechny vytvořené objekty.
+ * @brief MainWindow::~MainWindow
+ */
+MainWindow::~MainWindow()
+{
+    deleteRoundWidgets();
+    delete gameDialog;
+    delete helpWin;
     delete ui;
 }
 

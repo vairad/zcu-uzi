@@ -12,7 +12,7 @@
 
 int RoundWidget::instance_counter = 0;
 
-RoundWidget::RoundWidget(QVBoxLayout *vLayout, QList<int> *roundValues, int numberOfSlots, QList<bool> *solution, QWidget *parent) : QWidget(parent)
+RoundWidget::RoundWidget(QList<int> *roundValues, int numberOfSlots, QList<bool> *solution, QWidget *parent) : QWidget(parent)
 {
     this->numberOfSlots = numberOfSlots;
     this->colors = *roundValues;
@@ -29,7 +29,6 @@ RoundWidget::RoundWidget(QVBoxLayout *vLayout, QList<int> *roundValues, int numb
     this->setMaximumSize(QSize(16777215, frameHeight));
     this->setCursor(QCursor(Qt::ArrowCursor));
     this->setAutoFillBackground(false);
-    vLayout->addWidget(this, 0, Qt::AlignTop);
 
     createLayout();
     createGraphicsView();
