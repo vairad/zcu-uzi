@@ -26,6 +26,7 @@ HEADERS  += gui/mainwindow.h \
             gui/gamedialog.h \
             gui/helpwindow.h \
             core/mastermind.h \
-            core/datacontroler.h
+            core/datacontroler.h \
+    core/imind.h
 
 FORMS    += gui/mainwindow.ui

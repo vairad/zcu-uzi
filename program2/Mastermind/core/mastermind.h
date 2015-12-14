@@ -4,7 +4,9 @@
 #include <vector>
 #include <exception>
 
-class Mastermind
+#include "core/imind.h"
+
+class Mastermind : public IMind
 {
     public:
         Mastermind(int colors, int places);
