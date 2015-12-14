@@ -9,6 +9,13 @@ Mastermind::Mastermind(int colors, int places)
     this->colors = colors;
     this->places = places;
 
+    for(int i = 0; i < places; ++i)
+    {
+        unsigned int tmp = generateRandomNumber(1, colors);
+        solution.push_back(tmp);
+    }
+
+
 }
 
 unsigned int Mastermind::generateRandomNumber(unsigned int lowEnd, unsigned int highEnd)
@@ -36,7 +43,8 @@ std::vector<bool> Mastermind::trySolution(std::vector<int> guess_colors)
     std::vector<int> tmpSolution(solution);
     std::vector<int> tmpGuess(guess_colors);
 
-    if(guess_colors.size() != places){
+    if(guess_colors.size() != places)
+    {
         throw new WrongCountException(); //hádám jiný počet míst než hra předpokládá
     }
 
