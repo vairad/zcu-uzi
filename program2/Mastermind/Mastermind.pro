@@ -19,7 +19,8 @@ SOURCES  += main.cpp\
             gui/mainwindow.cpp \
             gui/roundwidget.cpp \
             gui/gamedialog.cpp \
-            gui/helpwindow.cpp
+            gui/helpwindow.cpp \
+            core/usermind.cpp
 
 HEADERS  += gui/mainwindow.h \
             gui/roundwidget.h \
@@ -27,6 +28,8 @@ HEADERS  += gui/mainwindow.h \
             gui/helpwindow.h \
             core/mastermind.h \
             core/datacontroler.h \
-    core/imind.h
+            core/imind.h \
+            core/usermind.h \
+            core/exception.h
 
 FORMS    += gui/mainwindow.ui

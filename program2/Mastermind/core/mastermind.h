@@ -2,7 +2,6 @@
 #define MASTERMIND_H
 
 #include <vector>
-#include <exception>
 
 #include "core/imind.h"
 
@@ -11,11 +10,11 @@ class Mastermind : public IMind
     public:
         Mastermind(int colors, int places);
 
-        std::vector<bool> trySolution(std::vector<int> colors);
+        virtual std::vector<bool> trySolution(std::vector<int> guess_colors);
 
         /** getters for private atributs */
-        int getPlacesNumber();
-        int getColorNumber();
+        virtual unsigned int getPlacesNumber();
+        virtual unsigned int getColorNumber();
 
     private:
         /** number of used colors */
@@ -27,14 +26,6 @@ class Mastermind : public IMind
 
         unsigned int generateRandomNumber(unsigned int lowEnd, unsigned int highEnd);
 
-};
-
-class WrongCountException : public std::exception
-{
-  virtual const char* what() const throw()
-  {
-    return "Wrong number of guessed colors.";
-  }
 };
 
 #endif // MASTERMIND_H

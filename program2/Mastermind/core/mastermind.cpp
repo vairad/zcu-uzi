@@ -1,8 +1,9 @@
-#include "mastermind.h"
-
 #include <iterator>
 #include <random>
 #include <cstdlib>
+
+#include "core/mastermind.h"
+#include "core/exception.h"
 
 Mastermind::Mastermind(int colors, int places)
 {
@@ -45,7 +46,7 @@ std::vector<bool> Mastermind::trySolution(std::vector<int> guess_colors)
 
     if(guess_colors.size() != places)
     {
-        throw new WrongCountException(); //hádám jiný počet míst než hra předpokládá
+        throw WrongCountException(); //hádám jiný počet míst než hra předpokládá
     }
 
     // kontrola shodných pozic
@@ -85,7 +86,7 @@ std::vector<bool> Mastermind::trySolution(std::vector<int> guess_colors)
  * @brief Mastermind::getPlacesNumber
  * @return number of places to guess
  */
-int Mastermind::getPlacesNumber()
+unsigned int Mastermind::getPlacesNumber()
 {
     return places;
 }
@@ -94,7 +95,7 @@ int Mastermind::getPlacesNumber()
  * @brief Mastermind::getColorNumber
  * @return number of colors which place might contains
  */
-int Mastermind::getColorNumber()
+unsigned int Mastermind::getColorNumber()
 {
     return colors;
 }
