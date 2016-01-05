@@ -5,6 +5,7 @@
 
 class WrongCountException : public std::exception
 {
+  public:
   virtual const char* what() const throw()
   {
     return "Wrong number of guessed colors.";
