@@ -1,3 +1,32 @@
+/****************************************************************************************
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *Autor:
+ *  Radek VAIS
+ *  A13B045P
+ *  vaisr@students.zcu.cz
+ ****************************************************************************************/
+
+#include <unistd.h>
+#include <iostream>
+#include <exception>
+
 #include "cli/cmdinterface.h"
 
 #include "core/imind.h"
@@ -41,14 +70,16 @@ beginOfRound:
       }
 
       //připrav řešitel
+      CMDInterface::strategy();
       solver = new EntropySolver(colors, places);
 
-      // hraj
-      while(!round->isSolved()){
+      // hraj hru
+      while(!round->isSolved() && solver->numberOfSolutions() > 0){
           std::vector<bool> clue;
           std::vector<unsigned int> solution;
 
           //napln řešení odhadem
+          CMDInterface::thinking();
           solution = solver->nextTry();
           try{
               clue = round->trySolution(solution);
@@ -62,6 +93,13 @@ beginOfRound:
             solver->getClue(clue);
           }
       }
+      if(solver->numberOfSolutions() == 0){
+          CMDInterface::badPlayer();
+      }else{
+        CMDInterface::congratulation();
+        round->showSolution();
+      }
+
       gameType = CMDInterface::getNextRound();
       if(gameType == 'A'){
           goto beginOfRound;
@@ -70,7 +108,9 @@ beginOfRound:
 
 
       delete round;
-      return 1;
+      delete solver;
+
+      return 0;
     }
 
  /**
@@ -102,15 +142,27 @@ void testSolutionFactory(unsigned int colors, unsigned int places){
  * @brief printHelp
  */
 void printHelp(){
-    std::cout << "Napoveda";
+    std::cout << "Napoveda ke spusteni programu AutoMastermind:" << "\n";
+    std::cout << "" << "\n";
+    std::cout << "Spusteni bez parametru spustí hru." << "\n";
+    std::cout << "Spusteni s parametrem h zobrazi tuto napovedu." << "\n";
+    std::cout << "Spusteni s parametrem ? zobrazi tuto napovedu." << "\n";
+    std::cout << "Spusteni s parametrem t u_int u_int otestuje generátor kombinací." << "\n";
 }
 
+
+
+/**
+ * funkce main() kontroluje argumenty a spouští program
+ * @param argv mozno zadat kombinace parametru h / ? / t cislo cislo
+ * @return
+ */
 int main(int argc, char *argv[])
 {
     if(argc == 4 && *argv[1] == 't'){
         testSolutionFactory(atoi(argv[2]), atoi(argv[3]));
         return 0;
-    }else if(argc == 2 && *argv[1] == 'h'){
+    }else if(argc == 2 && (*argv[1] == 'h' || *argv[1] == '?' )){
         printHelp();
         return 0;
     }else{

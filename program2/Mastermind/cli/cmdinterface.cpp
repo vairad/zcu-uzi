@@ -1,9 +1,15 @@
-#include "cli/cmdinterface.h"
 #include <stdlib.h>
 #include <limits.h>
 #include <algorithm>
 
-unsigned int CMDInterface::getCount(){
+#include "cli/cmdinterface.h"
+
+/**
+ * Metoda načítá pouze čísla v rozsahu unsigned int
+ * @brief CMDInterface::getCount
+ * @return načtené číslo
+ */
+unsigned int CMDInterface::getUInt(){
     unsigned long number = ULONG_MAX;
     std::string numbuf;
 
@@ -24,20 +30,37 @@ unsigned int CMDInterface::getCount(){
         }
     }
 
-    std::cout << "Zadáno: " << number << "\n";
+    std::cout << "Zadáno: " << number << "\n" << "\n";
     return (unsigned int)number;
 }
 
+/**
+ * Metoda vytiskne výzvu zadání počtu barev a spustí metodu pro načtení čísla @code{getCount}
+ * @brief CMDInterface::getColorsCount
+ * @return načtené číslo
+ */
 unsigned int CMDInterface::getColorsCount(){
     std::cout << "Zadej počet barev" << "\n";
-    return getCount();
+    return getUInt();
 }
 
+/**
+ * Metoda vytiskne výzvu zadání počtu pozic a spustí metodu pro načtení čísla @code{getCount}
+ * @brief CMDInterface::getPlacesCount
+ * @return načtení čslo
+ */
 unsigned int CMDInterface::getPlacesCount(){
     std::cout << "Zadej počet pozic" << "\n";
-    return getCount();
+    return getUInt();
 }
 
+//###############################################################
+
+/**
+ * Metoda načte pouze znaky symbolizující typ hry: C / P
+ * @brief CMDInterface::getGameType
+ * @return char C / P
+ */
 char CMDInterface::getGameType(){
     std::cout << "Zadej typ hry." << "\n";
     std::cout << "Pro ohodnocení počítačem - C" << "\n";
@@ -46,16 +69,20 @@ char CMDInterface::getGameType(){
     char read = 0;
     while(read != 'C' && read != 'P'){
         std::cin >> read;
-        std::cout << "přečteno: " << read;
     }
-    std::cout << "Zadáno: " << read << "\n";
+    std::cout << "Zadáno: " << read << "\n" << "\n";
     return read;
 }
 
+/**
+ * Metoda načte pouze znaky symbolizující pokračivání vehře: A / N
+ * @brief CMDInterface::getNextRound
+ * @return char A / N
+ */
 char CMDInterface::getNextRound(){
     std::cout << "Chcetepokračovat dalším kolem?" << "\n";
-    std::cout << "Pro pokračivání zadej - A" << "\n";
-    std::cout << "Pro ukončení - N" << "\n";
+    std::cout << "Pro pokračivání zadej - (A)no" << "\n";
+    std::cout << "Pro ukončení - (N)e" << "\n";
 
     char read = 0;
     while(read != 'A' && read != 'N'){
@@ -66,27 +93,19 @@ char CMDInterface::getNextRound(){
     return read;
 }
 
+//###################################################################################################################x
+
+/**
+ * Odřádkuje dle zadaného počtu
+ * @brief CMDInterface::spacing
+ * @param lines počet volných řádek
+ */
 void CMDInterface::spacing(int lines){
     int n = 0;
     while(n < lines){
        std::cout << "\n";
        n++;
     }
-}
-
-void CMDInterface::newGame(){
-    spacing(6);
-    std::cout << "Nová hra právě začíná:" << "\n";
-}
-
-void CMDInterface::printInfo(){
-    std::cout << "Vítejte v programu AutoMASTERMIND" << "\n";
-    std::cout << "Tento program demonstruje automatické strojové řešení logické hry Mastermind." << "\n";
-    std::cout << "Jde o algoritmus Donalda Knutha (1977), který redukuje množinu všech řešení za pomoci entropie informace." << "\n";
-    std::cout << "\n";
-    std::cout << "Jsou k dispozici dva režimy hry:" << "\n";
-    std::cout << "\t 1)Ohodnocení tahu určuje počítač" << "\n";
-    std::cout << "\t 2)Ohodnocení tahu určuje uživatel" << "\n";
 }
 
 
@@ -124,9 +143,16 @@ std::vector<bool> CMDInterface::readClues(){
     return clues;
 }
 
+
+/***************************************** Následující metody tisknou dialog se strojem */
+
+/**
+ * Vytiskne hodnoty barev do řádky vedle sebe v nezmenenem poradi.
+ * @brief CMDInterface::printColors
+ * @param guess_colors
+ */
 void CMDInterface::printColors(std::vector<unsigned int> guess_colors)
 {
-    std::cout << "Počítač odhaduje:" << "\n";
     for(unsigned int i = 0; i < guess_colors.size(); ++i)
     {
         std::cout  << "\t" << guess_colors.at(i) << " ";
@@ -134,6 +160,62 @@ void CMDInterface::printColors(std::vector<unsigned int> guess_colors)
     std::cout << "\n";
 }
 
+/**
+ * Vytiskne libovolnou předanou zprávu.
+ * @brief CMDInterface::print
+ * @param msg
+ */
 void CMDInterface::print(std::string msg){
-    std::cout << msg;
+    std::cout << msg  << "\n";
+}
+
+/**
+ * Úvodní informace o hře.
+ * @brief CMDInterface::printInfo
+ */
+void CMDInterface::printInfo(){
+    std::cout << "Vítejte v programu AutoMASTERMIND" << "\n";
+    std::cout << "Tento program demonstruje automatické strojové resení logické hry Mastermind." << "\n";
+    std::cout << "Jde o algoritmus Donalda Knutha (1977), který redukuje mnozinu vsech resení za pomoci entropie informace." << "\n";
+    std::cout << "\n";
+    std::cout << "Jsou k dispozici dva rezimy hry:" << "\n";
+    std::cout << "\t 1)Ohodnocení tahu urcuje pocítac" << "\n";
+    std::cout << "\t 2)Ohodnocení tahu urcuje uzivatel" << "\n";
+    std::cout << "\t \t Pro ohodnocení slouzi znaky 1 a 0" << "\n";
+    std::cout << "\t \t 1 - symbolizuje správnou barvu na správném míste" << "\n";
+    std::cout << "\t \t 0 - symbolizuje správnou barvu na spatném míste" << "\n";
+}
+
+/**
+ * Informace o novém kole
+ * @brief CMDInterface::newGame
+ */
+void CMDInterface::newGame(){
+    spacing(6);
+    std::cout << "Nová hra právě začíná:" << "\n";
+}
+
+void CMDInterface::thinking(){
+    std::cout << " ... Premyslim ..."  << "\n";
+}
+
+void CMDInterface::strategy(){
+    std::cout << " Priravuji seznam reseni..." << "\n";
+}
+
+void CMDInterface::congratulation(){
+    std::cout << "Hlavolam byl uspesne vyresen!" << "\n";
+}
+
+void CMDInterface::guess(){
+    std::cout << "Odhaduji:" << "\n";
+}
+
+void CMDInterface::show(){
+    std::cout << "Ma kombinace byla:" << "\n";
+}
+
+void CMDInterface::badPlayer(){
+    std::cout << "To není možné!" << "\n";
+    std::cout << "Opravdu jste zadal správné ohodnocení?!" << "\n";
 }

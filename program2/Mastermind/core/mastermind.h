@@ -6,6 +6,17 @@
 
 #include "core/imind.h"
 
+/**
+ * Třída Mastermind symboliuje automatický ohodnocující systém hry Mastermind
+ * Automaticky vygeneruje náhodnou kombinaci dle zadaných parametrů,
+ * vůči které následně ohodnocuje odhady řešení.
+ *
+ * Implementuje rozhraní IMind.
+ *
+ * @author Radek VAIS - A13B0457P
+ * 12.12.2015
+ * @version verze 1.0.0
+ */
 class Mastermind : public IMind
 {
     public:
@@ -18,7 +29,7 @@ class Mastermind : public IMind
         /** getters for private atributs */
         virtual unsigned int getPlacesNumber();
         virtual unsigned int getColorNumber();
-        virtual std::vector<unsigned int> getSolution();
+        virtual void showSolution();
 
     private:
         /** number of used colors */

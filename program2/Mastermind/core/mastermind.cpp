@@ -43,7 +43,7 @@ std::vector<bool> Mastermind::trySolution(std::vector<unsigned int> guess_colors
     std::vector<unsigned int> tmpSolution(solution);
     std::vector<unsigned int> tmpGuess(guess_colors);
 
-    DataControler::printColors(guess_colors);
+    DataControler::showGuess(guess_colors);
 
     if(guess_colors.size() != places)
     {
@@ -89,12 +89,11 @@ std::vector<bool> Mastermind::trySolution(std::vector<unsigned int> guess_colors
     return clues;
 }
 
-std::vector<unsigned int> Mastermind::getSolution(){
+void Mastermind::showSolution(){
     if(solved){
-        return solution;
+        DataControler::showSolution(solution);
     }else{
-        std::vector<unsigned int> tmp;
-        return tmp;
+        DataControler::notSolved();
     }
 
 }

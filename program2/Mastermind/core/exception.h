@@ -3,6 +3,14 @@
 
 #include <exception>
 
+/**
+ * Výjimka, ktrá symbolizuje chybu špatné inicializace řešitele úlohy.
+ * Konkrétně špatný počet hádaných míst.
+ *
+ * @author Radek VAIS - A13B0457P
+ * 4.1.2016
+ * @version verze 1.0.0
+ */
 class WrongCountException : public std::exception
 {
   public:

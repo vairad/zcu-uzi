@@ -5,13 +5,11 @@
 
 
 /**
-Třída SolutionFactory slouží k vytvoření všech kombinací řešení pro hru Mastermind.
-
-@author Radek VAIS - A13B0457P
-
-26.12.2015
-
-@version verze 1.0.0
+* Třída SolutionFactory slouží k vytvoření všech kombinací řešení pro hru Mastermind.
+*
+* @author Radek VAIS - A13B0457P
+* 4.1.2016
+* @version verze 1.2.0
 */
 class SolutionFactory
 {
