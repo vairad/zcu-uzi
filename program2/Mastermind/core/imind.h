@@ -9,7 +9,7 @@
 class IMind
 {
     public:
-        virtual std::vector<bool> trySolution(std::vector<int> guess_colors) = 0;
+        virtual std::vector<bool> trySolution(std::vector<unsigned int> guess_colors) = 0;
 
         /** getters for private atributs */
         virtual bool isSolved() = 0;

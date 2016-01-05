@@ -11,7 +11,7 @@ class Mastermind : public IMind
     public:
         Mastermind(int colors, int places);
 
-        virtual std::vector<bool> trySolution(std::vector<int> guess_colors);
+        virtual std::vector<bool> trySolution(std::vector<unsigned int> guess_colors);
 
         virtual bool isSolved();
 
@@ -27,7 +27,7 @@ class Mastermind : public IMind
         /** flag that symbolized end of game*/
         bool solved;
         /** structure to keep solution in memory */
-        std::vector<int> solution;
+        std::vector<unsigned int> solution;
 
         std::random_device *random;
         std::uniform_int_distribution<int> *distributor;

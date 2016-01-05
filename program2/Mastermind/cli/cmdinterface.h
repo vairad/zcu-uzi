@@ -2,6 +2,7 @@
 #define CMDINTERFACE_H
 
 #include <iostream>
+#include <vector>
 
 class CMDInterface
 {
@@ -13,6 +14,9 @@ class CMDInterface
         static char getGameType();
         static char getNextRound();
         static void printInfo();
+        static std::vector<bool> readClues();
+        static void printColors(std::vector<unsigned int> guess_colors);
+
 };
 
 #endif // CMDINTERFACE_H

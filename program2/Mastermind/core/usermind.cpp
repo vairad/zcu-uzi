@@ -1,6 +1,7 @@
 #include "core/usermind.h"
 #include "core/exception.h"
 #include "core/datacontroler.h"
+#include "cli/cmdinterface.h"
 
 #include <iostream>
 
@@ -10,7 +11,7 @@ Usermind::Usermind(int colors, int places)
     this->places = places;
 }
 
-std::vector<bool> Usermind::trySolution(std::vector<int> guess_colors)
+std::vector<bool> Usermind::trySolution(std::vector<unsigned int> guess_colors)
 {  
     if(guess_colors.size() != places)
     {
@@ -24,7 +25,7 @@ std::vector<bool> Usermind::trySolution(std::vector<int> guess_colors)
 std::vector<bool> Usermind::readClues()
 {
     std::vector<bool> tmp_clues;
-    tmp_clues = DataControler::readClues();
+    tmp_clues = CMDInterface::readClues();
 
     if(tmp_clues.size() == this->places && tmp_clues.at(0) == true){
         this->solved = true;
@@ -32,9 +33,9 @@ std::vector<bool> Usermind::readClues()
     return tmp_clues;
 }
 
-void Usermind::printColors(std::vector<int> guess_colors)
+void Usermind::printColors(std::vector<unsigned int> guess_colors)
 {
-    DataControler::printColors(guess_colors);
+    CMDInterface::printColors(guess_colors);
 }
 
 /** getters for private atributs */

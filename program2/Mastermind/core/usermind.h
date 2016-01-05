@@ -7,7 +7,7 @@ class Usermind : public IMind
 {
     public:
         Usermind(int colors, int places);
-        virtual std::vector<bool> trySolution(std::vector<int> colors);
+        virtual std::vector<bool> trySolution(std::vector<unsigned int> colors);
 
         /** getters for private atributs */
         virtual bool isSolved();
@@ -19,7 +19,7 @@ class Usermind : public IMind
         bool solved;
 
         /** zobrazí hádané barvy */
-        void printColors(std::vector<int> guess_colors);
+        void printColors(std::vector<unsigned int> guess_colors);
         /** nacte ohodnocení tipu počítače od uživatele */
         std::vector<bool> readClues();
 };

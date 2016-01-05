@@ -6,6 +6,7 @@
 #include "core/mastermind.h"
 #include "core/exception.h"
 #include "core/datacontroler.h"
+#include "cli/cmdinterface.h"
 
 
 /**
@@ -30,7 +31,7 @@ Mastermind::Mastermind(int colors, int places)
         unsigned int tmp = distributor(generator);
         solution.push_back(tmp);
     }
-    DataControler::printColors(solution);
+    CMDInterface::printColors(solution);
 
 }
 
@@ -40,13 +41,13 @@ Mastermind::Mastermind(int colors, int places)
  * @throws WrongCountException defined in mastermind.h
  * @return sorted vectro of solution
  */
-std::vector<bool> Mastermind::trySolution(std::vector<int> guess_colors)
+std::vector<bool> Mastermind::trySolution(std::vector<unsigned int> guess_colors)
 {
     std::vector<bool> clues;
-    std::vector<int> tmpSolution(solution);
-    std::vector<int> tmpGuess(guess_colors);
+    std::vector<unsigned int> tmpSolution(solution);
+    std::vector<unsigned int> tmpGuess(guess_colors);
 
-    DataControler::printColors(guess_colors);
+    CMDInterface::printColors(guess_colors);
 
     if(guess_colors.size() != places)
     {
@@ -83,6 +84,7 @@ std::vector<bool> Mastermind::trySolution(std::vector<int> guess_colors)
                 j--;
 
                 clues.push_back(false);
+                break;
             }
         }
     }

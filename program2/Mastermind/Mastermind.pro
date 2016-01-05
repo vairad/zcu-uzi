@@ -23,7 +23,8 @@ SOURCES  += main.cpp\
             gui/helpwindow.cpp \
             core/usermind.cpp \
     cli/cmdinterface.cpp \
-    core/solutionfactory.cpp
+    core/solutionfactory.cpp \
+    core/entropysolver.cpp
 
 HEADERS  += gui/mainwindow.h \
             gui/roundwidget.h \
@@ -35,6 +36,8 @@ HEADERS  += gui/mainwindow.h \
             core/usermind.h \
             core/exception.h \
     cli/cmdinterface.h \
-    core/solutionfactory.h
+    core/solutionfactory.h \
+    core/entropysolver.h \
+    core/isolver.h
 
 FORMS    += gui/mainwindow.ui
