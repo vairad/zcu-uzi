@@ -6,8 +6,6 @@
 #include "core/mastermind.h"
 #include "core/exception.h"
 #include "core/datacontroler.h"
-#include "cli/cmdinterface.h"
-
 
 /**
  * Constructor prepare one combination to solve.
@@ -31,8 +29,6 @@ Mastermind::Mastermind(int colors, int places)
         unsigned int tmp = distributor(generator);
         solution.push_back(tmp);
     }
-    CMDInterface::printColors(solution);
-
 }
 
 /**
@@ -47,7 +43,7 @@ std::vector<bool> Mastermind::trySolution(std::vector<unsigned int> guess_colors
     std::vector<unsigned int> tmpSolution(solution);
     std::vector<unsigned int> tmpGuess(guess_colors);
 
-    CMDInterface::printColors(guess_colors);
+    DataControler::printColors(guess_colors);
 
     if(guess_colors.size() != places)
     {
@@ -91,6 +87,16 @@ std::vector<bool> Mastermind::trySolution(std::vector<unsigned int> guess_colors
 
     sort(clues.begin(), clues.end());
     return clues;
+}
+
+std::vector<unsigned int> Mastermind::getSolution(){
+    if(solved){
+        return solution;
+    }else{
+        std::vector<unsigned int> tmp;
+        return tmp;
+    }
+
 }
 
 /**

@@ -49,6 +49,10 @@ unsigned int Usermind::getPlacesNumber()
     return places;
 }
 
+std::vector<unsigned int> Usermind::getSolution(){
+    DataControler::echoItsOnYou();
+}
+
 unsigned int Usermind::getColorNumber()
 {
     return colors;

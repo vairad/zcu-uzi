@@ -16,6 +16,9 @@ class CMDInterface
         static void printInfo();
         static std::vector<bool> readClues();
         static void printColors(std::vector<unsigned int> guess_colors);
+        static void spacing(int lines);
+        static void newGame();
+        static void print(std::string msg);
 
 };
 

@@ -7,7 +7,7 @@ unsigned int CMDInterface::getCount(){
     unsigned long number = ULONG_MAX;
     std::string numbuf;
 
-    std::cout << "Zadej číslo mezi 0 a " << UINT_MAX << ":" << "\n";
+    std::cout << "Zadej číslo (doporučeno 5): "<< "\n";
 
     while(number > UINT_MAX){
         std::cin >> numbuf;
@@ -66,21 +66,27 @@ char CMDInterface::getNextRound(){
     return read;
 }
 
-void CMDInterface::printInfo(){
+void CMDInterface::spacing(int lines){
     int n = 0;
-    while(n < 5){
+    while(n < lines){
        std::cout << "\n";
        n++;
     }
+}
+
+void CMDInterface::newGame(){
+    spacing(6);
+    std::cout << "Nová hra právě začíná:" << "\n";
+}
+
+void CMDInterface::printInfo(){
     std::cout << "Vítejte v programu AutoMASTERMIND" << "\n";
     std::cout << "Tento program demonstruje automatické strojové řešení logické hry Mastermind." << "\n";
+    std::cout << "Jde o algoritmus Donalda Knutha (1977), který redukuje množinu všech řešení za pomoci entropie informace." << "\n";
+    std::cout << "\n";
     std::cout << "Jsou k dispozici dva režimy hry:" << "\n";
     std::cout << "\t 1)Ohodnocení tahu určuje počítač" << "\n";
     std::cout << "\t 2)Ohodnocení tahu určuje uživatel" << "\n";
-    std::cout << "\n";
-    std::cout << "Nová hra právě začíná:" << "\n";
-    std::cout << "\n";
-
 }
 
 
@@ -128,3 +134,6 @@ void CMDInterface::printColors(std::vector<unsigned int> guess_colors)
     std::cout << "\n";
 }
 
+void CMDInterface::print(std::string msg){
+    std::cout << msg;
+}

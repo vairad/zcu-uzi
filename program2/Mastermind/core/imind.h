@@ -15,6 +15,7 @@ class IMind
         virtual bool isSolved() = 0;
         virtual unsigned int getPlacesNumber() = 0;
         virtual unsigned int getColorNumber() = 0;
+        virtual std::vector<unsigned int> getSolution() = 0;
 
 
         virtual ~IMind(){}

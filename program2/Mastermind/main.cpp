@@ -1,36 +1,30 @@
-#include <iostream>
-#include <QApplication>
-
-#ifdef CLI
 #include "cli/cmdinterface.h"
-#elif GUI
-#include "gui/mainwindow.h"
-#endif
 
 #include "core/imind.h"
 #include "core/isolver.h"
-
+#include "core/exception.h"
 #include "core/mastermind.h"
 #include "core/usermind.h"
-
 #include "core/entropysolver.h"
-
-#include "core/exception.h"
-
 #include "core/solutionfactory.h"
 
 
-#ifdef CLI
-    int execGame(){
+/**
+ * Funkce, která představuje průběh hry.
+ * @brief execGame
+ * @return návratová hodnota programu
+ */
+int execGame(){
       IMind* round;
       ISolver* solver;
       unsigned int colors;
       unsigned int places;
       char gameType;
 
-beginOfRound:
-
       CMDInterface::printInfo();
+
+beginOfRound:
+      CMDInterface::newGame();
 
       //zjisti počty (set up hry)
       colors = CMDInterface::getColorsCount();
@@ -45,6 +39,7 @@ beginOfRound:
       }else if(gameType == 'C'){
           round = new Mastermind(colors, places);
       }
+
       //připrav řešitel
       solver = new EntropySolver(colors, places);
 
@@ -77,22 +72,6 @@ beginOfRound:
       delete round;
       return 1;
     }
-#elif GUI
-    int execGame(){
-        QApplication app(argc, argv);
-        MainWindow w;
-        w.show();
-
-        return app.exec();
-    }
-#else
-    int execGame(){
-       std::cout << "Wrong compiled program!" << "\n"
-       std::cout << "Define macro CLI for compiling program with command line interface" << "\n";
-       std::cout << "Define macro GUI for compiling with using Qt framework and graphics interface" << "\n";
-        return 99
-    }
-#endif
 
  /**
  * Funkce určená pro ověření funkčnosti továrny řešení hry Mastermind
@@ -117,6 +96,11 @@ void testSolutionFactory(unsigned int colors, unsigned int places){
     std::cout << "suma: " << counter << "\n";
 }
 
+
+/**
+ * Vytiskne nápovědu na konzoli.
+ * @brief printHelp
+ */
 void printHelp(){
     std::cout << "Napoveda";
 }

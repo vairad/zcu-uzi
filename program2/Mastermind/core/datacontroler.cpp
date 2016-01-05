@@ -1,16 +1,14 @@
+#include <string>
+
 #include "datacontroler.h"
 
-#include <iostream>
-#include <algorithm>
-#include <random>
+#include "cli/cmdinterface.h"
 
-DataControler::DataControler(){
-
+void DataControler::printColors(std::vector<unsigned int> guess_colors){
+    CMDInterface::printColors(guess_colors);
 }
 
-/*defines command line interface version of methods*/
-#ifdef CLI
-
-
-#endif /*end of CLI*/
-
+void DataControler::echoItsOnYou(){
+    std::string s = "Vy jste zadával ohodnocení....";
+    CMDInterface::print(s);
+}

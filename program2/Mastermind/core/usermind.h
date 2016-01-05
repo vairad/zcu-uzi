@@ -13,6 +13,7 @@ class Usermind : public IMind
         virtual bool isSolved();
         virtual unsigned int getPlacesNumber();
         virtual unsigned int getColorNumber();
+        virtual std::vector<unsigned int> getSolution();
     private:
         unsigned int places;
         unsigned int colors;

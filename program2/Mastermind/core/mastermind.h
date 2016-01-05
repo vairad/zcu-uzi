@@ -18,6 +18,7 @@ class Mastermind : public IMind
         /** getters for private atributs */
         virtual unsigned int getPlacesNumber();
         virtual unsigned int getColorNumber();
+        virtual std::vector<unsigned int> getSolution();
 
     private:
         /** number of used colors */

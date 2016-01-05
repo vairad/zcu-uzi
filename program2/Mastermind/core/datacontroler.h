@@ -9,6 +9,9 @@ class DataControler
 public:
     DataControler();
 
+    static void printColors(std::vector<unsigned int> guess_colors);
+    static void echoItsOnYou();
+
     /** objekt pro generování náhodných čísel */
     static std::random_device random_generator;
 };
