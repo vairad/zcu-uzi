@@ -12,6 +12,7 @@ TARGET = Mastermind
 TEMPLATE = app
 CONFIG += c++11
 
+DEFINES += CLI
 
 SOURCES  += main.cpp\
             core/mastermind.cpp \
@@ -20,7 +21,9 @@ SOURCES  += main.cpp\
             gui/roundwidget.cpp \
             gui/gamedialog.cpp \
             gui/helpwindow.cpp \
-            core/usermind.cpp
+            core/usermind.cpp \
+    cli/cmdinterface.cpp \
+    core/solutionfactory.cpp
 
 HEADERS  += gui/mainwindow.h \
             gui/roundwidget.h \
@@ -30,6 +33,8 @@ HEADERS  += gui/mainwindow.h \
             core/datacontroler.h \
             core/imind.h \
             core/usermind.h \
-            core/exception.h
+            core/exception.h \
+    cli/cmdinterface.h \
+    core/solutionfactory.h
 
 FORMS    += gui/mainwindow.ui
