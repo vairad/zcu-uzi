@@ -83,7 +83,14 @@ beginOfRound:
     }
 #endif
 
+ /**
+ * Funkce určená pro ověření funkčnosti továrny řešení hry Mastermind
+ * @brief testSolutionFactory
+ * @param colors počet barev
+ * @param places počet pozic
+ */
 void testSolutionFactory(unsigned int colors, unsigned int places){
+    std::cout << "Spoustim test tovarny reseni:" << "\n";
     SolutionFactory *factory = new SolutionFactory(colors, places);
 
     std::vector<unsigned int> sol;
@@ -96,10 +103,18 @@ void testSolutionFactory(unsigned int colors, unsigned int places){
     }
 }
 
+void printHelp(){
+    std::cout << "Napoveda";
+}
 
 int main(int argc, char *argv[])
 {
-    testSolutionFactory(5, 3);
-    //return execGame();
+   if(argc == 4 && *argv[1] == 't'){
+     testSolutionFactory(atoi(argv[2]), atoi(argv[3]));
+   }else if(argc == 2 && *argv[1] == 'h'){
+     printHelp();
+   }
+
+   //return execGame();
 }
 
