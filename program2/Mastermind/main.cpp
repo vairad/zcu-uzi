@@ -12,6 +12,8 @@
 #include "core/imind.h"
 #include "core/exception.h"
 
+#include "core/solutionfactory.h"
+
 
 #ifdef CLI
     int execGame(){
@@ -81,8 +83,23 @@ beginOfRound:
     }
 #endif
 
+void testSolutionFactory(unsigned int colors, unsigned int places){
+    SolutionFactory *factory = new SolutionFactory(colors, places);
+
+    std::vector<unsigned int> sol;
+    while(factory->hasNextSolution()){
+        sol = factory->getNextSolution();
+        for(unsigned int i = 0; i < sol.size(); ++i){
+            std::cout << sol.at(i)  << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
 
 int main(int argc, char *argv[])
 {
-    return execGame();
+    testSolutionFactory(5, 3);
+    //return execGame();
 }
+

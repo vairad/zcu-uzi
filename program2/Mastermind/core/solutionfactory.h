@@ -5,6 +5,7 @@
 
 class SolutionFactory
 {
+    std::vector<unsigned int> nextSolution;
     std::vector<unsigned int> lastSolution;
     bool allSolutions;
     unsigned int colors;
