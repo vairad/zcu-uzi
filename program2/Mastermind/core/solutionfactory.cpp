@@ -1,5 +1,6 @@
 #include "solutionfactory.h"
 
+#include <iostream>
 
 /**
  * Konstruktor připraví továrnu do výchozího stavu pro vygenerování všech kombinací.
@@ -45,6 +46,10 @@ std::vector<unsigned int> SolutionFactory::getNextSolution(){
                 continue; //pookud ano, tak pokračuj v cyklu dál
             }else{
                 nextSolution.at(i+1) += 1;  // pokud ne zvyš ho a ukonči cyklus
+                for(unsigned int j = i; j > 0; --j){
+                    nextSolution.at(j) = 1; // vrat predchozi kotouce na 1
+                }
+                nextSolution.at(0) = 1; // ošetření podtečení unsigned int ve for cyklu při průchodu s nulou
                 break;
             }
         }
