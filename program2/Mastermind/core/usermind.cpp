@@ -1,5 +1,6 @@
 #include "core/usermind.h"
 #include "core/exception.h"
+#include "core/datacontroler.h"
 
 #include <iostream>
 
@@ -22,23 +23,26 @@ std::vector<bool> Usermind::trySolution(std::vector<int> guess_colors)
 
 std::vector<bool> Usermind::readClues()
 {
-    std::vector<bool> clues;
+    std::vector<bool> tmp_clues;
+    tmp_clues = DataControler::readClues();
 
-    clues.push_back(true);
-
-    return clues;
+    if(tmp_clues.size() == this->places && tmp_clues.at(0) == true){
+        this->solved = true;
+    }
+    return tmp_clues;
 }
 
 void Usermind::printColors(std::vector<int> guess_colors)
 {
-    std::cout << "Počítač odhatuje:" << "\n";
-    for(unsigned int i = 0; i < places; ++i)
-    {
-        std::cout << i+1 << ". " << guess_colors.at(i) << "\n";
-    }
+    DataControler::printColors(guess_colors);
 }
 
 /** getters for private atributs */
+bool Usermind::isSolved(){
+    return solved;
+}
+
+
 unsigned int Usermind::getPlacesNumber()
 {
     return places;

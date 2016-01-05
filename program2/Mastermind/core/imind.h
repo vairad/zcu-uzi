@@ -12,6 +12,7 @@ class IMind
         virtual std::vector<bool> trySolution(std::vector<int> guess_colors) = 0;
 
         /** getters for private atributs */
+        virtual bool isSolved() = 0;
         virtual unsigned int getPlacesNumber() = 0;
         virtual unsigned int getColorNumber() = 0;
 
