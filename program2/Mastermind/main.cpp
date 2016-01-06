@@ -116,6 +116,58 @@ beginOfRound:
       return 0;
     }
 
+/**
+ * Funkce, která představuje průběh jedné automatické hry
+ * @brief autoGame
+ * @return návratová hodnota programu
+ */
+int autoGame(unsigned int colors, unsigned int places){
+      IMind* round;
+      ISolver* solver;
+
+      CMDInterface::printAutoInfo();
+      CMDInterface::newGame();
+
+      round = new Mastermind(colors, places);
+
+      //připrav řešitel
+      solver = new EntropySolver(colors, places);
+
+      // hraj hru
+      while(!round->isSolved() && solver->numberOfSolutions() > 0){
+          std::vector<bool> clue;
+          std::vector<unsigned int> solution;
+
+          //napln řešení odhadem
+          solution = solver->nextTry();
+          try{
+              clue = round->trySolution(solution); //získej ohodnocení odhadu
+              CMDInterface::printClue(clue);
+
+          }catch(WrongCountException &e){
+              std::cout << "Špatný počet hádaných cifer" << "\n";
+              std::cout << "Předcházela špatná inicializace počítadla" << "\n";
+              break;
+          }
+
+          if(!round->isSolved()){ //pokud kolo neskončilo
+            solver->getClue(clue);      //pouč se z řešení
+          }
+      }
+
+      if(solver->numberOfSolutions() == 0){ // pokud řešiteli došly odhady, vzdal to
+            CMDInterface::badPlayer();
+      }else{
+            CMDInterface::congratulation(); //jinak hru vyřešil
+            round->showSolution();
+      }
+
+      delete round;
+      delete solver;
+
+      return 0;
+    }
+
  /**
  * Funkce určená pro ověření funkčnosti továrny řešení hry Mastermind
  * @brief testSolutionFactory
@@ -151,7 +203,9 @@ void printHelp(){
     std::cout << "Spusteni s parametrem h zobrazi tuto napovedu." << "\n";
     std::cout << "Spusteni s parametrem ? zobrazi tuto napovedu." << "\n";
     std::cout << "Spusteni s parametrem t u_int u_int otestuje generátor kombinací." << "\n";
+    std::cout << "Spusteni s parametrem a u_int u_int spusti automatickou verzi." << "\n";
 }
+
 
 
 
@@ -163,11 +217,28 @@ void printHelp(){
 int main(int argc, char *argv[])
 {
     if(argc == 4 && *argv[1] == 't'){
-        testSolutionFactory(atoi(argv[2]), atoi(argv[3]));
+        unsigned int a = atoi(argv[2]);
+        unsigned int b = atoi(argv[3]);
+        if(a > 0 && b > 0){
+             testSolutionFactory(a, b);
+             return 0;
+        }else{
+            std::cout << "Šparná čísla: " << a << " a " << b;
+            return 5;
+        }
         return 0;
     }else if(argc == 2 && (*argv[1] == 'h' || *argv[1] == '?' )){
         printHelp();
         return 0;
+    }else if(argc == 4 && (*argv[1] == 'a')){
+        unsigned int a = atoi(argv[2]);
+        unsigned int b = atoi(argv[3]);
+        if(a > 0 && b > 0){
+        return autoGame(a, b);
+        }else{
+            std::cout << "Šparná čísla: " << a << " a " << b;
+            return 5;
+        }
     }else{
         return execGame();
     }
