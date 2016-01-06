@@ -200,11 +200,26 @@ void CMDInterface::printInfo(){
 }
 
 /**
+ * Úvodní informace při automatické hře.
+ * @brief CMDInterface::printAutoInfo
+ */
+void CMDInterface::printAutoInfo(){
+    std::cout << "Vítejte v programu AutoMASTERMIND" << "\n";
+    std::cout << "Tento program demonstruje automatické strojové resení logické hry Mastermind." << "\n";
+    std::cout << "Jde o algoritmus Donalda Knutha (1977), který redukuje mnozinu vsech resení za pomoci entropie informace." << "\n";
+    std::cout << "\n";
+    std::cout << "Hra je v automatickém režimu" << "\n";
+    std::cout << "Ohodnocení tahu:" << "\n";
+    std::cout << "\t 1 - symbolizuje správnou barvu na správném míste" << "\n";
+    std::cout << "\t 0 - symbolizuje správnou barvu na spatném míste" << "\n";
+}
+
+/**
  * Informace o novém kole
  * @brief CMDInterface::newGame
  */
 void CMDInterface::newGame(){
-    spacing(6);
+    spacing(3);
     std::cout << "Nová hra právě začíná:" << "\n";
 }
 

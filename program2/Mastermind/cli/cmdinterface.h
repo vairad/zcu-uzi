@@ -26,6 +26,7 @@ class CMDInterface
 
         /* metody pro výpis informací uživateli */
         static void printInfo();
+        static void printAutoInfo();
         static void printColors(std::vector<unsigned int> guess_colors);
         static void printClue(std::vector<bool> clues);
         static void spacing(int lines);
