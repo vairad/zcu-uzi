@@ -80,6 +80,7 @@ char CMDInterface::getGameType(){
  * @return char A / N
  */
 char CMDInterface::getNextRound(){
+    std::cout << "\n";
     std::cout << "Chcetepokračovat dalším kolem?" << "\n";
     std::cout << "Pro pokračivání zadej - (A)no" << "\n";
     std::cout << "Pro ukončení - (N)e" << "\n";
@@ -131,14 +132,9 @@ std::vector<bool> CMDInterface::readClues(){
         }
     }
     sort(clues.begin(), clues.end());
-
-    std::cout << "Zadal jste ohodnocení tahu";
-    for(unsigned int i = 0; i < clues.size(); ++i)
-    {
-        std::cout << " " << clues.at(i);
-    }
-
     std::cout << "\n";
+
+    printClue(clues);
 
     return clues;
 }
@@ -159,6 +155,23 @@ void CMDInterface::printColors(std::vector<unsigned int> guess_colors)
     }
     std::cout << "\n";
 }
+
+/**
+ * Vytiskne ohodnocení pokusu
+ * @brief CMDInterface::printColors
+ * @param guess_colors
+ */
+void CMDInterface::printClue(std::vector<bool> clues)
+{
+    std::cout << "Ohodnocení tahu je: ";
+    for(unsigned int i = 0; i < clues.size(); ++i)
+    {
+        std::cout << " " << clues.at(i);
+    }
+
+    std::cout << "\n";
+}
+
 
 /**
  * Vytiskne libovolnou předanou zprávu.
@@ -204,18 +217,23 @@ void CMDInterface::strategy(){
 }
 
 void CMDInterface::congratulation(){
+    std::cout << "\n";
     std::cout << "Hlavolam byl uspesne vyresen!" << "\n";
 }
 
 void CMDInterface::guess(){
+    std::cout << "\n";
     std::cout << "Odhaduji:" << "\n";
 }
 
 void CMDInterface::show(){
+    std::cout << "\n";
     std::cout << "Ma kombinace byla:" << "\n";
 }
 
 void CMDInterface::badPlayer(){
+    std::cout << "\n";
     std::cout << "To není možné!" << "\n";
     std::cout << "Opravdu jste zadal správné ohodnocení?!" << "\n";
+    std::cout << "\n";
 }

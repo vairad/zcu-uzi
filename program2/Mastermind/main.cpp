@@ -82,29 +82,32 @@ beginOfRound:
           CMDInterface::thinking();
           solution = solver->nextTry();
           try{
-              clue = round->trySolution(solution);
+              clue = round->trySolution(solution); //získej ohodnocení odhadu
+              CMDInterface::printClue(clue);
+
           }catch(WrongCountException &e){
               std::cout << "Špatný počet hádaných cifer" << "\n";
               std::cout << "Předcházela špatná inicializace počítadla" << "\n";
               break;
           }
-          if(!round->isSolved()){
-            //pouč se z řešení
-            solver->getClue(clue);
+
+          if(!round->isSolved()){ //pokud kolo neskončilo
+            solver->getClue(clue);      //pouč se z řešení
           }
       }
-      if(solver->numberOfSolutions() == 0){
+
+      if(solver->numberOfSolutions() == 0){ // pokud řešiteli došly odhady, vzdal to
           CMDInterface::badPlayer();
       }else{
-        CMDInterface::congratulation();
+        CMDInterface::congratulation(); //jinak hru vyřešil
         round->showSolution();
       }
 
+       //ukonči kolo - dotaz na konec aplikace/nove kolo
       gameType = CMDInterface::getNextRound();
       if(gameType == 'A'){
           goto beginOfRound;
       }
-      //ukonči kolo - dotaz na konec aplikace/nove kolo
 
 
       delete round;
