@@ -95,11 +95,11 @@ int EntropySolver::computePoints(std::vector<unsigned int> v1, std::vector<unsig
  * @return vektor odhadnutého řešení
  */
 std::vector<unsigned int> EntropySolver::nextTry(){
-    if(first == true){ //poprvé zvol náhodný odhad
+   /* if(first == true){ //poprvé zvol náhodný odhad
         first = false;
         lastSolution = solutions.at(rand() % solutions.size());
         return lastSolution;
-    }
+    }*/ //špatný přístup k randomizaci začátku
 
     //pro včechny řešení propočti entropii a hledej maximum
     unsigned int indexOfMaximumEntropy = 0;
@@ -152,7 +152,7 @@ double EntropySolver::computeEntropy(std::vector<unsigned int> sol){
         entropy += ppst * log2(ppst);
     }
 
-    return entropy;
+    return (-entropy);
 }
 
 /** ***************************************************************************
