@@ -35,7 +35,7 @@ datum: & 6.1.2016\\
 \section{Zadání} %=====================================================================================================
 
 Napište program, který řeší hru Mastermind (počet políček a barev je vstupním parametrem) sofistikovaným způsobem,
- tj. ne prohledáváním všech alternativ\footnote{Prohledáváním všech alternativ chápejme náhodné zkoušení možností, dokud nedosáhneme úspěchu.}. K~dispozici  by  měly být dvě varianty programu; jedna umožní zadávat ohodnocení 
+ tj. ne prohledáváním všech alternativ\footnote{Prohledáváním všech alternativ chápu jako náhodné zkoušení možností, dokud nedosáhneme úspěchu.}. K~dispozici  by  měly být dvě varianty programu; jedna umožní zadávat ohodnocení 
 zvenku (ručně), druhá ohodnocuje automaticky podle zadaného vzoru.  
 
 K~realizaci je možné využít některý z~programovacích jazyků C, C++, Java, Prolog nebo jejich kombinaci. 
@@ -51,9 +51,7 @@ Hotovou práci odevzdejte v~jediném archivu typu ZIP prostřednictvím elektron
 
 \subsection{Pravidla hry}
 
-Ve hře Mastermind (neboli Logik) jde o~to, uhádnout tajnou kombinaci protivníka. Kombinace je dána rozmístěním různě barevných prvků na pevný počet pozic. Obvyklé parametry hry jsou šest možných barev na čtyřech různých pozicích, ale není to striktně určeno. K~hádání dostává hráč nápovědu v~podobě černých a bílých kolíků (viz obrázek \ref{fig:game}). Každý barevný prvek, který hádající hráč umístil do správné pozice, je ohodnocen černým kolíkem, každý barevný prvek, který se v~zadané tajné kombinaci vyskytuje, ale není v~dané pozici, je ohodnocen kolíkem bílým. Pokud není kombinace hádajícího hráče ohodnocena žádným kolíkem, znamená to, že se v~tajné kombinaci žádná z~použitých barev v~hodnocené kombinaci nevyskytuje. 
-
-Hráči se ve volbě tajné kombinace a jejím hádání střídají. Počet pokusů při hádání jedné tajné kombinace je omezen. Existují dva způsoby vyhodnocení této hry (tedy určení, který z~hráčů byl lepší). První je to, který z~hráčů odhalil více tajných kombinací soupeře během sudého počtu her. Pokud oba hráči odhalí stejný počet tajných kombinací, vítězí hráč, který ke zjištění potřeboval celkový menší počet pokusů. 
+Ve hře Mastermind (neboli Logik) jde o~to, uhádnout tajnou kombinaci protivníka. Kombinace je dána rozmístěním různě barevných prvků na pevný počet pozic. Obvyklé parametry hry jsou šest možných barev na čtyřech různých pozicích, ale není to striktně určeno. K~hádání dostává hráč nápovědu v~podobě černých a bílých kolíků (viz Obrázek \ref{fig:game}). Každý barevný prvek, který hádající hráč umístil do správné pozice, je ohodnocen černým kolíkem, každý barevný prvek, který se v~zadané tajné kombinaci vyskytuje, ale není v~dané pozici, je ohodnocen kolíkem bílým. Pokud není kombinace hádajícího hráče ohodnocena žádným kolíkem, znamená to, že se v~tajné kombinaci žádná z~použitých barev v~hodnocené kombinaci nevyskytuje. 
 
 \begin{figure}[ht]
 \centering
@@ -62,11 +60,13 @@ Hráči se ve volbě tajné kombinace a jejím hádání střídají. Počet pok
 \label{fig:game}
 \end{figure}
 
-Existují dva způsoby hodnocení výhry této hry (který z~hráčů je lepší). Prvním je skutečnost který z~hráčů odhalil více kombinací soupeře během několika her. Pokud, ale oba hráči odhalí všechny kombinace neznáme lepšího. Proto použijeme jako druhý parametr kvality hráče počet tahů, který potřeboval ke zjištění všech kombinací.
+Hráči se ve volbě tajné kombinace a jejím hádání střídají. Počet pokusů při hádání jedné tajné kombinace je omezen. Existují dva způsoby vyhodnocení této hry (tedy určení, který z~hráčů byl lepší). První je to, který z~hráčů odhalil více tajných kombinací soupeře během sudého počtu her. Pokud oba hráči odhalí stejný počet tajných kombinací, vítězí hráč, který ke zjištění potřeboval celkový menší počet pokusů. 
+
+
 
 \subsection{Metody řešení}
 
-Pro hádání kombinací lze použít různé metody zíkladní přehled poskytuje An Optimal Mastermind (4,7) Strategy and More Results in the Expected Case od Geoffroy \footnote{Geoffroy Ville - Cornell University Library online http://arxiv.org/abs/1305.1010}. Pro bližší rozbor jsem zvolil genetický algoritmus a heuristický algoritmus Donalda Ervina Knutha.
+Pro hádání kombinací lze použít různé metody. Základní přehled poskytuje článek An Optimal Mastermind (4,7) Strategy and More Results in the Expected Case od Geoffroy Villeho \footnote{Geoffroy Ville - Cornell University Library online http://arxiv.org/abs/1305.1010}. Pro bližší rozbor jsem zvolil genetický algoritmus a heuristický algoritmus Donalda Ervina Knutha.
 
 \subsubsection{Genetický algoritmus}
 
@@ -74,14 +74,16 @@ Při tvorbě genetického algoritmu je třeba zvolit vhodné bázové prvky popu
 
 \subsubsection{Knuthův algoritmus}
 
-Je založený na chytrém výběru řešení z~množiny možných řešení. K~výběru následující kombinace využívá entropii náhodné veličiny, reprezentující ohodnocení konkrétních kombinací vzhledem k~uvažované hádané kombinaci. Vybrána je taková kombinace, jejíž ohodnocení poskytuje maximální střední entropii (viz rovnice \ref{eq:entropy}). Po každém pokusu je dle ohodnocení kombinace protihráčem redukována množina řešení o~všechna, která nevyhovují zadanému ohodnocené. Tento postup se opakuje než zůstane jediné řešení.
+Tento algoritmus je založený na sofistikovaném výběru řešení z~množiny možných řešení. K~výběru následující kombinace využívá entropii náhodné veličiny, reprezentující ohodnocení konkrétních kombinací vzhledem k~uvažované hádané kombinaci. Vybrána je taková kombinace, jejíž ohodnocení poskytuje maximální střední entropii (viz vztah \ref{eq:entropy}).
 
 \begin{equation}
 H(x) = - \sum p(x_i) \cdot log_2(p(x_i))
 \label{eq:entropy}
 \end{equation}
 
-Existuje několik publikací, které popisují optimalizaci ohodnocovací funkce (výše uvedený výpočet entropie). Výsledky těchto prací ovlivňují rozložení a rozptyl počtu pokusů k~odhalení výsledné kombinace. Viz článek výše. Standardními kritérii pro porovnání různých metod jsou střední počet respektive maximální potřebný pokusů k~odhalení kombinace.
+Po každém pokusu je dle ohodnocení kombinace protihráčem redukována množina řešení o~všechna, která nevyhovují zadanému ohodnocené. Tento postup se opakuje než zůstane jediné řešení.
+
+Existuje několik publikací, které popisují optimalizaci ohodnocovací funkce (výše uvedený výpočet entropie). Výsledky těchto prací ovlivňují rozložení a rozptyl počtu pokusů k~odhalení výsledné kombinace (viz článek odkazovaný výše). Standardními kritérii pro porovnání efektivnosti různých metod jsou střední počet a maximální potřebný počet pokusů k~odhalení tajné kombinace.
 
 %========================================
 %========================================
@@ -93,9 +95,8 @@ Existuje několik publikací, které popisují optimalizaci ohodnocovací funkce
 Zvolil jsem implementaci Knuthova algoritmu:
 \begin{enumerate}
 \item Snaží se minimalizovat počet pokusů ve střední hodnotě.
-\item Z~uvedeného článku vyplývá že s~rostoucím počtem barev a pozic se jeho parametry zlepšují.
-\item Oproti algoritmům sofistiokvaně pracujícími se stromy se zdá být jednodušší. 
-\item Mám zkušenosti s~podobnou úlohou řešenou v~rámci KIV/TI.
+\item Z~odkazovaného článku vyplývá, že oproti jiným metodám s~rostoucím počtem barev a pozic se jeho efektivita zvyšuje.
+\item Oproti algoritmům sofistikovaně pracujícími se stromy se zdá být tento algoritmus jednodušší. 
 \end{enumerate}
 
 \begin{figure}[ht]
@@ -107,9 +108,9 @@ Zvolil jsem implementaci Knuthova algoritmu:
 
 K~implementaci jsem zvolil jazyk C++ pro jeho rozšíření o~základní datové struktury (seznamy, mapy, řetězce) oproti jazyku C. Nejedná se o~interpretovaný jazyk, proto od programu očekávám vyšší rychlost provádění oproti interpretovanému jazyku.
 
-Základní stavba programu je znázorněna UML dagramem tříd na obrázku~\ref{fig:uml}. Běh programu je řízen funkcí \texttt{main()}, která zpracuje argumenty a spustí požadované funkce (interaktivní hra, automatická hra, test nebo nápověda). Při vykonávání hlavní funkce pro interaktivní hru \texttt{execGame()} se vytvoří instance tříd IMind a ISolver, které představují instanci hry a instanci řešitele. Poté proběhne cyklus jednoho kola hry (pokusy dokud není skrytá kombinace odhalena). Následně je buď hra ukončena a nebo se spustí opět od inicializace.
+Základní stavba programu je znázorněna UML dagramem tříd na Obrázku~\ref{fig:uml}. Běh programu je řízen funkcí \texttt{main()}, která zpracuje argumenty a spustí požadované funkce (interaktivní hra, automatická hra, test nebo nápověda). Při vykonávání hlavní funkce pro interaktivní hru \texttt{execGame()} se vytvoří instance tříd IMind a ISolver které představují instanci hry a instanci řešitele. Poté proběhne cyklus jednoho kola hry (pokusy dokud není skrytá kombinace odhalena). Následně je buď hra ukončena a nebo se spustí opět od inicializace.
 
-Veškerá komunikace s~uživatelem během hry je zprostředkována pomocí třídy \texttt{CMDInterface}. Ke které třídy z~jádra aplikace přistupují pomocí třídy \texttt{DataControler}, která tvoří mezistupeň pro snazší vytvoření grafického uživatelského rozhraní.
+Veškerá komunikace s~uživatelem během hry je zprostředkována pomocí třídy \texttt{CMDInterface}. Ke které třídy z~jádra aplikace přistupují pomocí třídy \texttt{DataControler}, jež tvoří mezistupeň pro snazší vytvoření grafického uživatelského rozhraní.
 
 \subsection{Rozhraní IMind}
 Rozhraní \texttt{IMind} symbolizuje instanci hry. Toto rozhraní deklaruje tuto funkcionalitu:
@@ -135,7 +136,7 @@ unsigned int numberOfSolutions()
 
 Metoda \texttt{nextTry()} zaručuje získání další hádané kombinace. Metoda \texttt{getClue()} zaručuje předání ohodnocení posledního tahu zpět řešiteli a umožňuje se z~ohodnocení poučit. Metoda \texttt{numberOfSolutions()} slouží k~získání počtu zbývajících řešení, aby bylo možné zjistit, zda ještě řešitel má nějaké odhady v~záloze.
 
-Toto rozhraní implementuje třída \texttt{EntropySolver} která používá výše zmíněný Knuthův algoritmus pro volbu nejvhodnějšího řešení. Ohodnocení tahu je v~aplikaci převedeno na body, za každý přesně určený připočte 10 bodů a za každou barvu na špatném místě 1 bod. S~pomocí takto zjednodušeného ohodnocení se během průchodu metodou \texttt{nextTry()} spočte střední entropie (viz rovnice \ref{eq:entropy}) pro každé nezavržené řešení a řešení s~nejvyšší vrátí jako odhad. Při průchodu metodou \texttt{getClue()} je zmenšen seznam zbývajících ohodnocení na základě předaného ohodnocení. Jsou odstraněna všechna řešení s~jiným bodovým ohodnocením než bylo předáno v~závislosti na posledním odhadu.
+Toto rozhraní implementuje třída \texttt{EntropySolver} která používá výše zmíněný Knuthův algoritmus pro volbu nejvhodnějšího řešení. Ohodnocení tahu je v~aplikaci převedeno na body, za každý přesně určený připočte 10 bodů a za každou barvu na špatném místě 1 bod. S~pomocí takto zjednodušeného ohodnocení se během průchodu metodou \texttt{nextTry()} spočte střední entropie (viz vztah \ref{eq:entropy}) pro každé nezavržené řešení a řešení s~nejvyšší vrátí jako odhad. Při průchodu metodou \texttt{getClue()} je zmenšen seznam zbývajících ohodnocení na základě předaného ohodnocení. Jsou odstraněna všechna řešení s~jiným bodovým ohodnocením než bylo předáno v~závislosti na posledním odhadu.
 
 %========================================
 %========================================
@@ -148,7 +149,7 @@ Toto rozhraní implementuje třída \texttt{EntropySolver} která používá vý
 %=====================================================================================================================
 \subsection{Překlad a~sestavení programu}
 
-Pro automatický překlad pomocí překladače \texttt{gcc}, respektive \texttt{g++} je v~archivu ve složce build připravený soubor Makefile, který slouží k~překladu pomocí programu \texttt{make}. Výstupem je soubor \texttt{Mastermind.exe}. Pokud chcete použít jiný překladač než gcc použijte soubor Makefile pro zjištění vzájemných závislostí modulů\footnote{Další možností je upravit soubor Makefile, zde změnit příkaz překladače, připadně syntaxi příkazů pro překládání, aby odpovídali vašemu překladači.}.
+Pro automatický překlad pomocí překladače \texttt{gcc}, respektive \texttt{g++} je v~archivu ve složce build připravený soubor Makefile, který slouží k~překladu pomocí programu \texttt{make}. Výstupem je soubor \texttt{Mastermind.exe}. V~případě použití jiného překladače než \texttt{gcc}, je nutné použít soubor Makefile pro zjištění vzájemných závislostí modulů\footnote{Další možností je upravit soubor Makefile, zde změnit příkaz překladače, případně syntaxi příkazů pro překládání, aby odpovídaly vašemu překladači.}.
 
 %========================================
 %=====================================================================================================================
@@ -162,7 +163,7 @@ Program přijímá vstupní data pomocí argumentů nebo pomocí CLI (uživatels
 Jedná se o~konzolovou aplikaci, proto spuštění provádíme z~příkazové řádky příkazem \texttt{Mastermind.exe [type [num1 num2]]}. Při spuštění bez parametrů program zahájí interaktivní herní režim a zjistí od uživatele potřebné informace.
 
 \subsubsection{Parametry příkazové řádky}
-Jako typ (\texttt{type}) spuštění lze použít \texttt{h} (případně \texttt{?}) bez dalších parametrů. Což vyvolá nápovědu ke spuštění programu. Typ spuštění \texttt{t} vyžaduje další dva parametry počet barev a počet pozic. Spuštění s~tímto parametrem ověří funkčnost generátoru možných řešení. Typ spuštěni \texttt{a} také vyžaduje další dva parametry. Opět jde o~počet barev a počet pozic. Tento parametr spustí variantu programu, která ke svému běhu nepotřebuje interakci uživatele. Pokud zvolíme jinou kombinaci parametrů, bude automaticky spuštěn program v~režimu interaktivní hry.
+Jako typ (\texttt{type}) spuštění lze použít \texttt{h} (případně \texttt{?}) bez dalších parametrů. To vyvolá nápovědu ke spuštění programu. Typ spuštění \texttt{t} vyžaduje další dva parametry počet barev a počet pozic. Spuštění s~tímto parametrem ověří funkčnost generátoru možných řešení. Typ spuštěni \texttt{a} také vyžaduje další dva parametry. Opět jde o~počet barev a počet pozic. Tento parametr spustí variantu programu, která ke svému běhu nepotřebuje interakci s~uživatelem. Pokud zvolíme jinou kombinaci parametrů, bude automaticky spuštěn program v~režimu interaktivní hry.
 
 \begin{table}[htb]
 	\centering
@@ -171,19 +172,19 @@ Jako typ (\texttt{type}) spuštění lze použít \texttt{h} (případně \textt
 		\hline
 		\texttt{h} & nápověda\\
 		\texttt{?} & nápověda\\
-		\texttt{t u\_int u\_int} & test generátoru řešení\\
+		\texttt{t u\_int u\_int} & test generátoru množiny řešení\\
 		\texttt{a u\_int u\_int} & automatický režim
 	\end{tabular}     
 
-	\caption{Tabulka shrnuje možné argumenty pro spuštění programu.}
+	\caption{Shrnutí možných argumentů pro spuštění programu.}
 	\label{tab:args}
 \end{table}
 
 \subsubsection{Interaktivní režim}
 
-Program v~režimu interaktivní hry vykonává smyčku, během které postupně zjistí parametry hry, provede postup řešení a ukončí program nebo spustí nové kolo od zjištění parametrů hry. Během zjišťování parametrů si program vyžádá dvě celá kladná čísla, která znamenají počet možných barev a počet pozic. Třetím parametrem je mechanismus ohodnocení. Tato volba určuje, kdo zadává ohodnocení a tedy si i vymyslí tajnou kombinaci (počítač nebo uživatel). 
+Program v~režimu interaktivní hry vykonává smyčku, během které postupně zjistí parametry hry, provede postup řešení a ukončí program nebo spustí nové kolo od zjištění parametrů hry. Během zjišťování parametrů si program vyžádá dvě celá kladná čísla, která znamenají počet možných barev a počet pozic. Třetím parametrem je mechanismus ohodnocení. Tato volba určuje, kdo zadává ohodnocení a kdo tedy vytváří tajnou kombinaci (počítač nebo uživatel). 
 
-Za předpokladu, uživatelského ohodnocení hry je třeba mít na paměti mechanismus zadávání ohodnocení odhadu do počítače. Za každou správnou barvu na správném místě zadejte \texttt{1} a za každou správnou barvu na špatném místě zadejte \texttt{0}. Jednotlivé ohodnocení se zadává po jednom znaku. A~každé místo může být ohodnoceno právě jednou. Pro ukončení ohodnocení zadejte znak \texttt{N}. Pokud provedete ohodnocení chybně, počítač není schopen to rozpoznat ve chvíli vaší chyby a hra pravděpodobně skončí nenalezením správného řešení.  
+Za předpokladu, uživatelského ohodnocení hry je třeba mít na paměti mechanismus zadávání ohodnocení odhadu do počítače. Za každou správnou barvu na správném místě hráč zadá \texttt{1} a za každou správnou barvu na špatném místě zadá \texttt{0}. Jednotlivé ohodnocení se zadává po jednom znaku. Každé místo může být ohodnoceno právě jednou. Pro ukončení ohodnocení zadejte je třeba zadat \texttt{N}. Pokud uživatel provede ohodnocení chybně, počítač není schopen to rozpoznat ve chvíli chyby a hra pravděpodobně skončí nenalezením správného řešení.  
 
 %========================================
 %========================================
@@ -194,7 +195,7 @@ Za předpokladu, uživatelského ohodnocení hry je třeba mít na paměti mecha
 \section{Závěr}  %======================================================================================================
 
 
-Vytvořený program byl testován 30 náhodnými úlohami pro 6 barev a 4 pozice, které vyřešil se střední hodnotou 4,60 pokusů a maximálním počtem   6 pokusů. (viz příloha) Vzhledem k~tomu, že pro tento počet barev a pozic existuje celkem 1296 různých kombinací, nelze výše uvedené zjištěné hodnoty porovnávat s~výsledky získanými jinými metodami a uváděnými v~literatuře (viz tabulka \ref{tab:data}). Na vytvoření programu, který automaticky prověří řešení všech kombinací a získá tak relevantní statistické hodnoty, již nezbyl čas, nebylo to ani předmětem zadání.
+Vytvořený program byl testován 30 náhodnými úlohami pro 6 barev a 4 pozice, které vyřešil se střední hodnotou 4,60 pokusů a maximálním počtem   6 pokusů (viz Tabulka \ref{tab:priloha} v~příloze). Vzhledem k~tomu, že pro tento počet barev a pozic existuje celkem 1296 různých kombinací, nelze výše uvedené zjištěné hodnot porovnávat s~výsledky získanými jinými metodami a uváděnými v~literatuře (viz Tabulka 2). Na vytvoření programu, který automaticky prověří řešení všech kombinací a získá tak relevantní statistické hodnoty, již nezbyl čas, nebylo to ani předmětem zadání.
 
 \begin{table}[ht]
 \begin{tabular}{c | c | c}
@@ -209,11 +210,10 @@ Optimal      &   4.340 &  6\\
 
 \end{tabular}
 \label{tab:data}
-\caption{Výsledky pro optimalizovaný běh programu z~výše uvedeného článku. Pro konfiguraci 6 barev 4 pozice.}
+\caption{Výsledky pro optimalizovaný běh programu z~výše odkazovaného článku (pro konfiguraci 6 barev 4 pozice).}
 \end{table}
 		
-
-Bylo možné pouze porovnání s~optimálním stromem pro řešení úlohy pro 2 barvy a 3 pozice, který je uváděn v~literatuře. Vytvoření optimálního stromu pro obecný počet barev a pozic ovšem není reálné.
+Bylo možné pouze porovnání s~optimálním stromem pro řešení úlohy pro 2 barvy a 3 pozice, který je uváděn v~odkazovaném článku (Tabulka 3 a Tabulka 4). Střední hodnota počtu pokusů i maximální počet pokusů je u~implementované metody v~tomto případě stejný, jako u~optimálního stromu. Vytvoření optimálního stromu pro obecný počet barev a pozic ovšem není reálné.
 
 \begin{table}[h]
 \centering
@@ -234,12 +234,14 @@ Kombinace &   Počet pokusů\\
 
 Střední počet pokusů:  18/8 = 2,25
 Maximální počet pokusů:  3 
-\caption{Výsledky pro optimální algoritmus.}
+
+\label{tab:optimal}
+\caption{Výsledky pro optimální algoritmus (pro konfiguraci 2 barvy 2 pozice).}
 \end{table}
 
 
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{c | c }
 
@@ -258,7 +260,8 @@ Kombinace &   Počet pokusů\\
 
 Střední počet pokusů:  18/8 = 2,25
 Maximální počet pokusů:  3 
-\caption{Výsledky pro implementovaný algoritmus.}
+\label{tab:implementace}
+\caption{Výsledky pro implementovaný algoritmus (pro konfiguraci 2 barvy 2 pozice).}
 \end{table}
 
 Pro vyšší počty barev a pozic si může implementovaný algoritmus dávat o~něco málo horší výsledky než jsou uváděny v~literatuře (u~dvou barev a třech pozic tento efekt nenastal). Bylo by to dáno tím, že jsem vhodný tah vybíral pouze z~postupně redukované množiny možných řešení, přestože existují situace, kdy některé kombinace, které již nemohou být řešením, přinášejí ve střední hodnotě maximální informaci (ovšem za cenu delší doby výpočtu, která by s~narůstajícím počtem barev a pozic rostla exponenciálně). 
@@ -305,7 +308,7 @@ Kombinace &   Počet pokusů\\
  
 
 \end{tabular}
-
+\label{tab:priloha}
 \caption{Testovací výsledky pro implementovaný algoritmus a kombinace 6 barev a 4 pozice.}
 \end{table}
 
