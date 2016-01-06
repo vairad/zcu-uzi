@@ -10,12 +10,12 @@
  * @return načtené číslo
  */
 unsigned int CMDInterface::getUInt(){
-    unsigned long number = ULONG_MAX;
+    unsigned long number = 20000;
     std::string numbuf;
 
     std::cout << "Zadej číslo (doporučeno 5): "<< "\n";
 
-    while(number > UINT_MAX){
+    while(number > 10000){
         std::cin >> numbuf;
 
         number = strtoul(numbuf.c_str(), 0, 10); //prevod z ascii na long
@@ -24,7 +24,7 @@ unsigned int CMDInterface::getUInt(){
             std::cout << "Číslo je moc velké" << "\n";
             continue;
         }
-        if(number > UINT_MAX){ // pokud je vyšší než uint
+        if(number > 10000){ // pokud je vyšší než uint
             std::cout << "Číslo je moc velké" << "\n";
             continue;
         }
