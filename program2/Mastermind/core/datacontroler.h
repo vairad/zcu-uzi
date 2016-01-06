@@ -17,7 +17,7 @@ class DataControler
 public:
     static void showGuess(std::vector<unsigned int> guess_colors);
     static void echoItsOnYou();
-    static void showSolution(std::vector<unsigned int> guess_colors);
+    static void showSolution(std::vector<unsigned int> solution_colors);
     static void notSolved();
     static std::vector<bool> readClues();
 
