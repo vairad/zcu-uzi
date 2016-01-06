@@ -1,13 +1,16 @@
-#include "entropysolver.h"
-
-#include "limits.h"
-#include "math.h"
-//#include <iostream>
 #include <map>
+#include <math.h>
 
+#include "entropysolver.h"
 #include "core/solutionfactory.h"
 
-
+/** ***************************************************************************
+ * Konstruktor pomocí @code{SolutionFactory} naplní pole možných řešení.
+ * A vlajku prvního pokusu.
+ * @brief EntropySolver::EntropySolver
+ * @param colors počet barev
+ * @param places počet pozic
+ */
 EntropySolver::EntropySolver(unsigned int colors, unsigned int places)
 {
     //generate solutions using solution factory
@@ -19,9 +22,11 @@ EntropySolver::EntropySolver(unsigned int colors, unsigned int places)
     }
 
     delete factory;
+
+    first = true;
 }
 
-/**
+/** ***************************************************************************
  * Vypočte heuristický počet bodů z vektoru nápovědy.
  * @brief EntropySolver::computePoints
  * @param clue vektor nápovědy
@@ -42,7 +47,7 @@ int EntropySolver::computePoints(std::vector<bool> clue){
     return points;
 }
 
-/**
+/** ***************************************************************************
  * Vypočte heuristický počet bodů ze dvou vektorů řešení.
  * Za shodnou barvu na stejném místě připočte @code{PLACE_POINTS} bodů.
  * Za shodnou barvu na špatném místě připočte @code{COLOR_POINTS} bodů
@@ -82,16 +87,25 @@ int EntropySolver::computePoints(std::vector<unsigned int> v1, std::vector<unsig
     return points;
 }
 
+/** ***************************************************************************
+ * Metoda vybere nejvhodnější odhad řešení. Nejvodnější řešení jeurčeno pomocí
+ * výpočtu entropie. Odhadujeme tedy řešení, které nám přenese nejvíce nové infomace.
+ * Proto je odhadnuto řešení s maximáln entropií.
+ * @brief EntropySolver::nextTry
+ * @return vektor odhadnutého řešení
+ */
 std::vector<unsigned int> EntropySolver::nextTry(){
-    //pro včechny řešení propočti entropii a hledej maximum
+    if(first == true){ //poprvé zvol náhodný odhad
+        first = false;
+        lastSolution = solutions.at(rand() % solutions.size());
+        return lastSolution;
+    }
 
+    //pro včechny řešení propočti entropii a hledej maximum
     unsigned int indexOfMaximumEntropy = 0;
     double maximumEntropy = 0.0;
 
-    //std::cout << "************************************ in next try \n";
-
     for(unsigned int i = 0; i < solutions.size(); ++i){
-        //std::cout << "***********************incycle\n";
         double tmpEntropy = computeEntropy(solutions.at(i));
         if(tmpEntropy > maximumEntropy){
             maximumEntropy = tmpEntropy;
@@ -99,32 +113,28 @@ std::vector<unsigned int> EntropySolver::nextTry(){
         }
     }
 
-    //std::cout << "************************************ after cycle next try \n";
-    //std::cout << "max index: " << indexOfMaximumEntropy;
-
     //vyber to s nejvyšší hodnotou
     lastSolution = solutions.at(indexOfMaximumEntropy);
     return lastSolution;
 }
 
+/** ***************************************************************************
+ * Metoda vypočte entropii konkrétního řešení.
+ * @brief EntropySolver::computeEntropy
+ * @param sol odhad pro který počítáme entropii
+ * @return hodnotu entropie pro dané řešení
+ */
 double EntropySolver::computeEntropy(std::vector<unsigned int> sol){
     double entropy = 0.0;
 
     std::map<int, int> points_map;
     points_map.clear();
 
-    //std::cout << "************************************ in computeEntropy \n";
-    //std::cout << "points size: " << points.size();
-
-
     for(unsigned int i = 0; i < solutions.size(); ++i){
        // napočti ohodnocení
 
-       //std::cout << "**" << i << "\n";
        points.at(i) = computePoints(sol, solutions.at(i));
     }
-
-    //std::cout << "************ in after 1 cycle \n";
 
     for(unsigned int i = 0; i < solutions.size(); ++i){
         //vytvarej histogram cetnosti
@@ -145,6 +155,12 @@ double EntropySolver::computeEntropy(std::vector<unsigned int> sol){
     return entropy;
 }
 
+/** ***************************************************************************
+ * Metoda se poučí z nápovědy vrácené po předchozím pokusu.
+ * Vyřadí ze seznamu možných řešení všechny, co mají odlišné ohodnocení.
+ * @brief EntropySolver::getClue
+ * @param clue ohodnocení pokusu
+ */
 void EntropySolver::getClue(std::vector<bool> clue){
     // napočti body z ohodnocení
     int pointsClue = computePoints(clue);
@@ -162,6 +178,11 @@ void EntropySolver::getClue(std::vector<bool> clue){
     }
 }
 
+/** **************************************************************************
+ * Vrací počet zbývajících řešení
+ * @brief EntropySolver::numberOfSolutions
+ * @return počet zbývajících řešení
+ */
 unsigned int EntropySolver::numberOfSolutions(){
     return solutions.size();
 }
