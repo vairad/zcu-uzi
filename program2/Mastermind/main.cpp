@@ -1,12 +1,15 @@
 /****************************************************************************************
  *Hlavní soubor programu AutoMastermind představuje automatický řešitel hry Mastermind
+ *Program implementuje algoritmus Donalda Knutha (1977), který redukuje mnozinu vsech
+ *resení za pomoci entropie informace.
  *
- *Pravidla:
+ *
+ *Pravidla hry Mastemind:
  *Ve hře Mastermind (neboli Logik) jde o to, uhádnout tajnou kombinaci pro-
  *tivníka. Kombinace je dána rozmístěním různě barevných prvků na pevný
  *počet pozic. Obvyklé parametry hry jsou šest možných barev na čtyřech růz-
  *ných pozicích, ale není to striktně určeno. K hádání dostává hráč nápovědu
- *v podobě černých a bílých kolíků (viz Obrázek 1). Každý barevný prvek,
+ *v podobě černých a bílých kolíků. Každý barevný prvek,
  *který hádající hráč umístil do správné pozice, je ohodnocen černým kolíkem,
  *každý barevný prvek, který se v zadané tajné kombinaci vyskytuje, ale není
  *v dané pozici, je ohodnocen kolíkem bílým. Pokud není kombinace hádají-
